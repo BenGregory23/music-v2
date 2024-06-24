@@ -1,8 +1,12 @@
 import noteImg from '../assets/music_note.png'
-import {useRef} from "react";
+import { useMusicStore } from '../stores/musics.ts'; 
 
-const MusicNote = ({rotation, facing, interval}:{rotation: number, facing: 'left' | 'right', interval?: number }) =>{
+const MusicNote = ({rotation, facing, delay}:{rotation: number, facing: 'left' | 'right', delay?: number }) =>{
+    const playing = useMusicStore((state) => state.playing);
     // const interval = useRef(setInterval(()))
+
+
+    console.log()
 
     const rotationPossiblePositions = {
         0: 'rotate-0',
@@ -20,12 +24,25 @@ const MusicNote = ({rotation, facing, interval}:{rotation: number, facing: 'left
         360: 'rotate-360'
     };
 
+    const delayOptions = {
+        0: 'delay-0',
+        75: 'delay-75',
+        100: 'delay-100',
+        150: 'delay-150',
+        200: 'delay-200',
+        300: 'delay-300',
+        500: 'delay-500',
+        700: 'delay-700',
+        1000: 'delay-1000'
+    }
+
+    if(!playing) return null;
 
     return (
         <div className={rotationPossiblePositions[rotation]}>
             <img
                 src={noteImg}
-                className={`animate-note-move ${facing === 'left' ? 'transform -scale-50' : ''}`}
+                className={`animate-note-move  ${facing === 'left' ? 'transform -scale-50' : ''} ${delay ? delayOptions[delay?.toString()] : ''}`}
             />
         </div>
     )

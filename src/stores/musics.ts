@@ -1,7 +1,6 @@
 import {create} from "zustand"
 import {TMusic} from "@/types.ts";
-import {Simulate} from "react-dom/test-utils";
-import play = Simulate.play;
+
 
 interface MusicState {
     musics: any[] | any,
@@ -38,6 +37,7 @@ export const useMusicStore  = create<MusicState>((set) => ({
     addMusic: (music: TMusic) => set((state: MusicState) => {
         state.musics.push(music)
         localStorage.setItem("musics", JSON.stringify(state.musics))
+        getMusics()
         return {musics: state.musics};
     }),
     removeMusic: (music: TMusic) => set((state: MusicState) => {
