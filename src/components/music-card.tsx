@@ -3,31 +3,20 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  Label,
 } from "@radix-ui/react-dropdown-menu";
-import { DotsVerticalIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon, ImageIcon, Pencil1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { useMusicStore } from "../stores/musics.ts";
 import { Button } from "./ui/button.tsx";
 import usePlay from "../hooks/usePlay.ts";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "@radix-ui/react-dialog";
-import { DialogHeader, DialogFooter } from "./ui/dialog.tsx";
-import { Input } from "./ui/input.tsx";
 import { useState } from "react";
 
-const MusicCard = ({ music }: { music: any }) => {
+const MusicCard = ({ music,onOpenEditDialog }: { music: any, onOpenEditDialog: (open:boolean)=>void }) => {
   const musics = useMusicStore((state) => state.musics);
   const removeMusic = useMusicStore((state) => state.removeMusic);
   const setCurrentMusic = useMusicStore((state) => state.setCurrent);
   const setPlaying = useMusicStore((state) => state.setPlaying);
   const [play, pause] = usePlay();
-  const [imageUrl, setImageUrl] = useState("");
+  const [editing, setEditing] = useState(false);
 
   return (
     <div
@@ -44,19 +33,23 @@ const MusicCard = ({ music }: { music: any }) => {
           : null
       }`}
     >
-          {music.imageUrl ? (
-            <img className={"w-20 h-20 object-cover"} src={music.imageUrl} />
-          ) : (
-            <div
-           
-              className={
-                "w-20 h-20 flex font-medium text-xl items-center bg-slate-200 justify-center"
-              }
-            >
-              {music.name[0]}
-            </div>
-          )}
+      <div onClick={(event)=>{event.stopPropagation();onOpenEditDialog(true)}} className="flex items-center  justify-center bg-neutral-200 -500 w-20 h-20 group relative overflow-hidden">
+        <div className="absolute justify-center items-center transition-all w-20 h-20 z-50 group-hover:flex hidden">
+            <Pencil1Icon className="bg-black rounded-full p-2 w-9 h-9 text-white" />
+        </div>
      
+        {music.imageUrl ? (
+          <img className={"w-20 h-20 object-cover group-hover:opacity-80 group-hover:scale-110 transition-all "} src={music.imageUrl} />
+        ) : (
+          <div
+            className={
+              "w-12 h-12 flex font-medium text-xl items-center  rounded-full justify-center group-hover:scale-110 transition-all"
+            }
+          >
+            {music.name[0]}
+          </div>
+        )}
+      </div>
 
       <span className={"text-lg font-medium"}>{music ? music.name : null}</span>
 
@@ -73,10 +66,6 @@ const MusicCard = ({ music }: { music: any }) => {
           <DropdownMenuItem>Edit</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-
-
-   
     </div>
   );
 };

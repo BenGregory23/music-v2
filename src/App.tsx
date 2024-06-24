@@ -41,7 +41,6 @@ function App() {
               <MusicNote rotation={0} facing={"right"} delay={0}/>
               <MusicNote rotation={45} facing={"right"} delay={100} />
               <MusicNote rotation={90} facing={"left"} delay={300} />
-            
               <MusicNote rotation={180} facing={"left"} delay={500} />
             </div>
 
